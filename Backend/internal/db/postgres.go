@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -21,7 +22,9 @@ func Connect() (*pgxpool.Pool, error) {
 		return nil, err
 	}
 
-	cfg.ConnConfig.StatementCacheCapacity = 0
+	// ✅ PGX v5: force SIMPLE protocol (NO prepared statements)
+	cfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
 	cfg.MaxConns = 10
 	cfg.MinConns = 2
 	cfg.MaxConnIdleTime = 30 * time.Minute

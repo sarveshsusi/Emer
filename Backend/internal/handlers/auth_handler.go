@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"ticketapp/internal/repositories"
 	"ticketapp/internal/services"
@@ -35,7 +34,7 @@ func NewAuthHandler(
 }
 
 type LoginRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -46,27 +45,15 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.userRepo.GetByUsername(req.Username)
+	user, err := h.userRepo.GetByEmail(req.Email)
 	if err != nil || utils.ComparePassword(user.PasswordHash, req.Password) != nil {
 		http.Error(w, "invalid credentials", http.StatusUnauthorized)
-		fmt.Print(err)
 		return
 	}
 
-	// 🔐 OPTIONAL 2FA FLOW (keep commented until ready)
-	/*
-	if user.Is2FAEnabled {
-		_ = json.NewEncoder(w).Encode(map[string]any{
-			"requires_2fa": true,
-			"user_id":      user.ID.String(),
-		})
-		return
-	}
-	*/
-
-	// ✅ SINGLE SOURCE OF TRUTH FOR TOKENS
 	h.issueTokens(w, user.ID.String(), user.Role)
 }
+
 
 
 func (h *AuthHandler) Refresh(w http.ResponseWriter, r *http.Request) {

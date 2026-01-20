@@ -25,8 +25,8 @@ func (r *PostgresUserRepo) GetByUsername(username string) (*models.User, error) 
 
 	err := r.db.QueryRow(
 		context.Background(),
-		`SELECT id, username, password_hash, role, is_active
-		 FROM users WHERE username=$1`,
+   `SELECT id, username, email, password_hash, role, is_active
+		 FROM users WHERE email=$1`,
 		username,
 	).Scan(&u.ID, &u.Username, &u.PasswordHash, &u.Role, &u.IsActive)
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +11,9 @@ import (
 	"ticketapp/internal/repositories"
 	"ticketapp/internal/router"
 	"ticketapp/internal/services"
+
 	"github.com/joho/godotenv"
+	
 )
 func main() {
 	// -------------------------
@@ -72,6 +75,7 @@ adminHandler := handlers.NewAdminHandler(
 	// GLOBAL MIDDLEWARES
 	// -------------------------
 	handler := middlewares.CORS(appRouter)
+
 
 	// -------------------------
 	// SERVER
