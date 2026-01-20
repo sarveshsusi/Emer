@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"ticketapp/internal/repositories"
 	"ticketapp/internal/services"
@@ -48,6 +49,7 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	user, err := h.userRepo.GetByUsername(req.Username)
 	if err != nil || utils.ComparePassword(user.PasswordHash, req.Password) != nil {
 		http.Error(w, "invalid credentials", http.StatusUnauthorized)
+		fmt.Print(err)
 		return
 	}
 
