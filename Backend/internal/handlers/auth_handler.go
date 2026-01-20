@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"ticketapp/internal/repos"
+	"ticketapp/internal/repositories"
 	"ticketapp/internal/services"
 	"ticketapp/internal/utils"
 	"time"
